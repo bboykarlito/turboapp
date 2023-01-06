@@ -33,15 +33,16 @@ class MessagesController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new_message', partial: "messages/form", locals: {message: Message.new}),
-            turbo_stream.prepend('messages', partial: "messages/message", locals: {message: @message})
+            turbo_stream.prepend('messages', partial: "messages/message", locals: {message: @message}),
+            turbo_stream.update('notice', "Message created")
           ]
         end
-        
+
         format.html { redirect_to message_url(@message), notice: "Message was successfully created." }
         format.json { render :show, status: :created, location: @message }
       else
         format.turbo_stream do
-          render  turbo_stream: [
+          render turbo_stream: [
             turbo_stream.update('new_message', partial: "messages/form", locals: {message: @message})
           ]
         end
